@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import pygame as pg
 import time
 import random
@@ -28,7 +29,7 @@ class Square:
         self.color = color
 
 
-colors = [(200,0,0), (0,200,0)]
+colors = [(200,0,0), (0,200,0), (0,0,200)]
 
 
 tick = 0
@@ -37,7 +38,7 @@ while running:
     # New square
     if not sqr:
         col = random.randint(0,num_cols-1)
-        color = random.randint(0,1)
+        color = random.randint(0,2)
         sqr = Square(col,0,color)
 
     # Event loop
