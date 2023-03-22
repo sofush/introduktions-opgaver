@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Opskrift på {{ opskrift }}</title>
+  </head>
+  <body>
+    <h3>Ingredienser i {{ opskrift }}</h3>
+<div style="padding: 1cm;">
+
+    <table>
+        <tr>
+          <th>Navn</th>
+          <th>Mængde</th>
+          <th>Note</th>
+        </tr>
+    {% for ingredient in ingredients %}
+      <tr>
+        <td>{{ingredient[0]}}</td>
+        <td>{{ingredient[1]}}</td>
+        <td>{{ingredient[2]}}</td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<form class="" action="/inputingredient" method="post">
+  Tilføj en ingrediens:<br>
+  <input type="hidden" name="recipe" value="{{ opskrift }}">
+  <label for="Navn">Navn:</label>
+  <input type="text" name="name" value=""><br>
+  <label for="Mængde">Mængde</label>
+  <input type="range" oninput="range_weight_disp.value = range_weight.value" min="1" max="10" name="amount"><br>
+  <label for="note">Note</label>
+  <textarea name="note" rows="8" cols="80"></textarea><br>
+  <button type="submit" name="submit">Tilføj</button>
+</form>
+
+  <a href="/home"><h3>Tilbage til oversigt</h3></a>
+  </body>
+</html>

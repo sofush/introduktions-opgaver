@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Cocktailopskrifter</title>
+  </head>
+  <body>
+    <h1>Mix en lækker cocktail</h1>
+      <h3>Vælg en opskrift</h3><br>
+      {% for opskrift in opskrifter %}
+        <div>
+          <a href="/visopskrift?recipe={{ opskrift }}">{{ opskrift }}</a>
+        </div>
+      <br>
+      {% endfor %}
+
+    <a href="/addrecipe"><h1>Tilføj en ny opskrift</h1></a>
+  </body>
+</html>
