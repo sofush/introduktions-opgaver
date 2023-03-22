@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import pygame as pg
+from pygame import Color
 import time
 import random
 
@@ -29,7 +30,7 @@ class Square:
         self.color = color
 
 
-colors = [(200,0,0), (0,200,0), (0,0,200)]
+colors = [Color(200,0,0), Color(0,200,0), Color(0,0,200)]
 
 
 tick = 0
@@ -38,7 +39,7 @@ while running:
     # New square
     if not sqr:
         col = random.randint(0,num_cols-1)
-        color = random.randint(0,2)
+        color = random.choice(colors)
         sqr = Square(col,0,color)
 
     # Event loop
@@ -68,10 +69,10 @@ while running:
             pg.draw.rect(screen, (50,50,50), pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
 
             if col == sqr.col and row == sqr.row:
-                pg.draw.rect(screen, colors[sqr.color], pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
+                pg.draw.rect(screen, sqr.color, pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
 
             elif grid[col][row] is not None:
-                pg.draw.rect(screen, colors[grid[col][row].color] , pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
+                pg.draw.rect(screen, grid[col][row].color, pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
 
 
     # Update square
