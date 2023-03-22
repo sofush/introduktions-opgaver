@@ -30,6 +30,7 @@ class Square:
         self.color = color
 
 
+clear_color = Color(50,50,50)
 colors = [Color(200,0,0), Color(0,200,0), Color(0,0,200)]
 
 
@@ -66,7 +67,7 @@ while running:
 
         for row in range(num_rows):
 
-            pg.draw.rect(screen, (50,50,50), pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
+            pg.draw.rect(screen, clear_color, pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
 
             if col == sqr.col and row == sqr.row:
                 pg.draw.rect(screen, sqr.color, pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
