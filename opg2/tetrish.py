@@ -76,7 +76,7 @@ while running:
 
 
     # Update square
-    if tick % 10 == 0:
+    if tick % 3 == 0:
         if sqr.row + 1 < num_rows:
             if grid[sqr.col][sqr.row+1] is None:
                 sqr.row += 1
