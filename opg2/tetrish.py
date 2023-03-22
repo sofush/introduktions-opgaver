@@ -33,6 +33,23 @@ class Square:
 clear_color = Color(50,50,50)
 colors = [Color(200,0,0), Color(0,200,0), Color(0,0,200)]
 
+def is_complete_row(row_index):
+    for col in range(num_cols):
+        if grid[col][row_index] == None:
+            return False
+    return True
+
+
+def clear_row(row_index):
+    for col in range(num_cols):
+        grid[col][row_index] = None
+
+def remove_complete_rows():
+    for row in range(num_rows):
+        for col in range(num_cols):
+            if is_complete_row(row):
+                clear_row(row)
+
 
 tick = 0
 while running:
@@ -87,6 +104,8 @@ while running:
         else:
            grid[sqr.col][sqr.row] = sqr
            sqr = None
+        
+        remove_complete_rows()
 
 
     # Update the screen window with any new drawings
