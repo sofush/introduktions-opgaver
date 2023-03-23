@@ -11,11 +11,11 @@ class Data():
 
 
 
-    def add_recipe(self, name):
+    def add_recipe(self, name, rating):
         if name in self.get_recipes():
             print("Opskriften findes allerede")
         c = self.db.cursor()
-        c.execute("""INSERT INTO Recipes (name) VALUES (?)""", [name])
+        c.execute("""INSERT INTO Recipes (name, rating) VALUES (?,?)""", [name, rating])
         self.db.commit()
 
     def delete_recipe(self, name):
@@ -38,6 +38,13 @@ class Data():
 
         return recipes
 
+    def get_rating(self, recipe):
+        c = self.db.cursor()
+        c.execute("""SELECT rating FROM Recipes WHERE name = ?""",[recipe])
+        for recipe in c:
+            return recipe[0]
+
+
 
     def get_ingredients(self, recipe):
         c = self.db.cursor()
@@ -57,6 +64,7 @@ class Data():
         try:
             c.execute("""CREATE TABLE Recipes (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                rating INTEGER,
                 name TEXT);""")
         except Exception as e:
             print(e)

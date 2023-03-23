@@ -23,6 +23,10 @@ class Cocktail_mixer(tk.Frame):
         self.recipe_grid.delete(*self.recipe_grid.get_children())
         for ingredient in ingredients:
             self.recipe_grid.insert("", tk.END, values=ingredient)
+        rating = self.data.get_rating(self.cb_recipes.get())
+        if rating == None:
+            rating = "ukendt"
+        self.lbl_rating.config(text = f"Rating: {rating}")
 
 
     def delete_recipe(self):
@@ -36,7 +40,8 @@ class Cocktail_mixer(tk.Frame):
     def new_recipe(self):
         def insert():
             name = edNavn.get()
-            self.data.add_recipe(name)
+            rating = edRating.get()
+            self.data.add_recipe(name, rating)
             self.update_ui()
             dialog.destroy()
             dialog.update()
@@ -48,15 +53,18 @@ class Cocktail_mixer(tk.Frame):
         dialog = tk.Toplevel()
 
         edNavn = tk.Entry(dialog)
+        edRating = tk.Scale(dialog, from_=1, to=5, tickinterval=10)
 
         lblNavn = ttk.Label(dialog, text="Navn")
-        textNote = tk.Text(dialog, height=4)
+        lblRating = ttk.Label(dialog, text="Rating")
 
         butCancel = ttk.Button(dialog, text="Annuller", command=cancel)
         butOK = ttk.Button(dialog, text="OK", command=insert)
 
-        lblNavn.grid(column = 0, row = 0, columnspan=2)
-        edNavn.grid(column = 0, row = 1, columnspan=2)
+        lblNavn.grid(column = 0, row = 0, columnspan=1)
+        lblRating.grid(column = 1, row = 0, columnspan=1)
+        edNavn.grid(column = 0, row = 1, columnspan=1)
+        edRating.grid(column = 1, row = 1, columnspan=1)
 
         butCancel.grid(column = 0, row = 2)
         butOK.grid(column = 1, row = 2)
@@ -108,21 +116,23 @@ class Cocktail_mixer(tk.Frame):
         self.overskrift.grid(column=0,row=0,columnspan = 2)
 
         lbl_recipes = ttk.Label(self, text="Opskrifter")
+        self.lbl_rating = ttk.Label(self, text="Rating: Ukendt")
         self.recipe_value=tk.StringVar()
         self.cb_recipes = ttk.Combobox(self, values = [], textvariable=self.recipe_value)
         self.cb_recipes.bind("<<ComboboxSelected>>", self.on_recipe_selected)
 
         lbl_recipes.grid(column=0,row=1)
-        self.cb_recipes.grid(column=0,row=2)
+        self.lbl_rating.grid(column=0,row=2)
+        self.cb_recipes.grid(column=0,row=3)
 
         self.but_new_recipe = tk.Button(self, text = "Tilføj ny opskrift", command=self.new_recipe)
-        self.but_new_recipe.grid(column=0, row=3)
+        self.but_new_recipe.grid(column=0, row=4)
 
         self.but_new_ingredient = tk.Button(self, text = "Tilføj ny ingrediens", command=self.new_ingredient)
-        self.but_new_ingredient.grid(column=0, row=4)
+        self.but_new_ingredient.grid(column=0, row=5)
 
         self.but_delete_recipe = tk.Button(self, text = "Slet opskrift", command=self.delete_recipe)
-        self.but_delete_recipe.grid(column=0, row=5)
+        self.but_delete_recipe.grid(column=0, row=6)
 
         self.recipe_grid = ttk.Treeview(self, column=("columnIngredient", "columnAmount", "columnNote"), show='headings')
         self.recipe_grid.heading("#1", text="Ingrediens")
