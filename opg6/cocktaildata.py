@@ -28,10 +28,22 @@ class Data():
         c.execute("""INSERT INTO Recipes (name) VALUES (?)""", [name])
         db.commit()
 
+    def copy_recipe(self, recipe):
+        newname = f"{recipe}-kopi"
+        db = self._get_db()
+        c = db.cursor()
+        c.execute("""INSERT INTO Recipes (name) VALUES (?)""", [newname])
+        for ingredient in self.get_ingredients(recipe):
+            ingredientname = ingredient[0]
+            amount = ingredient[1]
+            note = ingredient[2]
+            c.execute("""INSERT INTO Ingredients (recipe, name, amount, note) VALUES (?,?,?,?)""", [newname,ingredientname,amount,note])
+        db.commit()
+
     def add_ingredient(self, recipe, name, amount, note):
         db = self._get_db()
         c = db.cursor()
-        c.execute("""INSERT INTO Ingredients (recipe, name, amount, note) VALUES (?,?,?,?)""", [recipe,name, amount,note])
+        c.execute("""INSERT INTO Ingredients (recipe, name, amount, note) VALUES (?,?,?,?)""", [recipe,name,amount,note])
         db.commit()
 
     def get_recipes(self):

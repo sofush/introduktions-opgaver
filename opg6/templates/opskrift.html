@@ -24,6 +24,9 @@
   </table>
 </div>
 
+<form action="/kopieropskrift?recipe={{ opskrift }}" method="post">
+<button type="submit" name="submit">Lav en kopi af opskriften</button>
+</form>
 <form class="" action="/inputingredient" method="post">
   Tilføj en ingrediens:<br>
   <input type="hidden" name="recipe" value="{{ opskrift }}">

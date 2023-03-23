@@ -35,6 +35,12 @@ def add_recipe():
 def list_ingredients():
     return render_template("ingredienser.html", ingredients = data.get_all_ingredients())
 
+@app.route("/kopieropskrift", methods=['GET', 'POST'])
+def copy_recipe():
+    recipe = request.args['recipe']
+    data.copy_recipe(recipe)
+    return redirect("/home")
+
 @app.route('/inputingredient', methods=['POST'])
 def input_ingredient():
     recipe = request.form['recipe']
