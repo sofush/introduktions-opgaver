@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import pygame as pg
 from pygame import Color
+from pygame import Surface
 import time
 import random
 
@@ -11,7 +12,13 @@ num_rows =12
 num_cols = 6 
 pad = 5
 
-screen = pg.display.set_mode((num_cols*cell_size + pad, num_rows*cell_size+pad))
+def calc_width():
+    return num_cols*cell_size + pad
+
+def calc_height():
+    return num_rows*cell_size + pad
+
+screen = pg.display.set_mode((calc_width(), calc_height()))
 
 grid = []
 for _ in range(num_cols):
@@ -33,12 +40,14 @@ class Square:
 clear_color = Color(50,50,50)
 colors = [Color(200,0,0), Color(0,200,0), Color(0,0,200)]
 
+def wait_tick():
+    time.sleep(0.1)
+
 def is_complete_row(row_index):
     for col in range(num_cols):
         if grid[col][row_index] == None:
             return False
     return True
-
 
 def clear_row(row_index):
     for col in range(num_cols):
@@ -50,6 +59,20 @@ def remove_complete_rows():
             if is_complete_row(row):
                 clear_row(row)
 
+
+def draw_game():
+    ## Draw game
+    for col in range(num_cols):
+
+        for row in range(num_rows):
+
+            pg.draw.rect(screen, clear_color, pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
+
+            if col == sqr.col and row == sqr.row:
+                pg.draw.rect(screen, sqr.color, pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
+
+            elif grid[col][row] is not None:
+                pg.draw.rect(screen, grid[col][row].color, pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
 
 tick = 0
 while running:
@@ -66,8 +89,24 @@ while running:
             # Close window
             running = False
         elif event.type == pg.KEYDOWN:
-            if event.key == pg.K_ESCAPE:
+            if event.key == pg.K_q:
                 running = False
+                pg.quit()
+                exit()
+
+            # Pause the game
+            elif event.key == pg.K_ESCAPE:
+                while True:
+                    wait_tick()
+                    sub_event = pg.event.wait()
+
+                    if sub_event.type == pg.QUIT:
+                        running = False
+                        break
+                    
+                    elif sub_event.type == pg.KEYDOWN:
+                        if sub_event.key == pg.K_ESCAPE:
+                            break
 
             elif event.key == pg.K_LEFT:
                 sqr.col -= 1
@@ -78,19 +117,7 @@ while running:
 
 
 
-
-    ## Draw game
-    for col in range(num_cols):
-
-        for row in range(num_rows):
-
-            pg.draw.rect(screen, clear_color, pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
-
-            if col == sqr.col and row == sqr.row:
-                pg.draw.rect(screen, sqr.color, pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
-
-            elif grid[col][row] is not None:
-                pg.draw.rect(screen, grid[col][row].color, pg.Rect((col*cell_size+pad, row*cell_size+pad), (cell_size-pad,cell_size-pad)))
+    draw_game()
 
 
     # Update square
@@ -112,5 +139,5 @@ while running:
     pg.display.flip()
 
     # Wait a moment
-    time.sleep(0.1)
+    wait_tick()
     tick = tick + 1
