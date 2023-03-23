@@ -18,6 +18,11 @@ class Data():
         c.execute("""INSERT INTO Recipes (name) VALUES (?)""", [name])
         self.db.commit()
 
+    def delete_recipe(self, name):
+        c = self.db.cursor()
+        c.execute("""DELETE FROM Recipes WHERE name IS (?)""", [name])
+        self.db.commit()
+
     def add_ingredient(self, recipe, name, amount, note):
         c = self.db.cursor()
         c.execute("""INSERT INTO Ingredients (recipe, name, amount, note) VALUES (?,?,?,?)""", [recipe,name, amount,note])

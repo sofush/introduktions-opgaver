@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import tkinter as tk
 import tkinter.ttk as ttk
 from cocktaildata import Data
@@ -23,6 +24,13 @@ class Cocktail_mixer(tk.Frame):
         for ingredient in ingredients:
             self.recipe_grid.insert("", tk.END, values=ingredient)
 
+
+    def delete_recipe(self):
+        recipe = self.cb_recipes.get()
+        self.data.delete_recipe(recipe)
+        self.cb_recipes.selection_clear()
+        self.cb_recipes.set('')
+        self.update_ui()
 
 
     def new_recipe(self):
@@ -112,6 +120,9 @@ class Cocktail_mixer(tk.Frame):
 
         self.but_new_ingredient = tk.Button(self, text = "Tilføj ny ingrediens", command=self.new_ingredient)
         self.but_new_ingredient.grid(column=0, row=4)
+
+        self.but_delete_recipe = tk.Button(self, text = "Slet opskrift", command=self.delete_recipe)
+        self.but_delete_recipe.grid(column=0, row=5)
 
         self.recipe_grid = ttk.Treeview(self, column=("columnIngredient", "columnAmount", "columnNote"), show='headings')
         self.recipe_grid.heading("#1", text="Ingrediens")
