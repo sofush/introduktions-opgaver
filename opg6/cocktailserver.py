@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from flask import Flask
 from flask import request
 from flask import g
@@ -26,10 +27,13 @@ def vis_opskrift():
     recipe = request.args['recipe']
     return render_template('opskrift.html', opskrift=recipe, ingredients = data.get_ingredients(recipe))
 
-
 @app.route("/addrecipe")
 def add_recipe():
     return render_template("newrecipe.html")
+
+@app.route("/ingredienser")
+def list_ingredients():
+    return render_template("ingredienser.html", ingredients = data.get_all_ingredients())
 
 @app.route('/inputingredient', methods=['POST'])
 def input_ingredient():

@@ -58,6 +58,17 @@ class Data():
 
         return ingredients
 
+    def get_all_ingredients(self):
+        db = self._get_db()
+        c = db.cursor()
+        c.execute("""SELECT name,amount,note FROM Ingredients""")
+        ingredients = []
+
+        for ingredient in c:
+            ingredients.append((ingredient[0],ingredient[1],ingredient[2]))
+
+        return ingredients
+
 
 
 
